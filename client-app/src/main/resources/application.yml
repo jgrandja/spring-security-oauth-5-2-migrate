@@ -1,0 +1,44 @@
+server:
+  port: 8080
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    org.springframework.security.oauth2: INFO
+#    org.springframework.boot.autoconfigure: DEBUG
+
+spring:
+  thymeleaf:
+    cache: false
+  security:
+    oauth2:
+      client:
+        registration:
+          messaging-client-auth-code:
+            provider: keycloak
+            client-id: messaging-client
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/authorized"
+            scope: message.read,message.write
+          messaging-client-client-creds:
+            provider: keycloak
+            client-id: messaging-client
+            client-secret: secret
+            authorization-grant-type: client_credentials
+            scope: message.read,message.write
+          messaging-client-password:
+            provider: keycloak
+            client-id: messaging-client
+            client-secret: secret
+            authorization-grant-type: password
+            scope: message.read,message.write
+        provider:
+          keycloak:
+            authorization-uri: http://auth-server:8090/auth/realms/oauth2-sample/protocol/openid-connect/auth
+            token-uri: http://auth-server:8090/auth/realms/oauth2-sample/protocol/openid-connect/token
+
+messages:
+  base-uri: http://localhost:8092/messages
